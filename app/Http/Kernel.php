@@ -37,6 +37,9 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\SetLanguage::class,
+            \App\Http\Middleware\Xmenu::class,
+           
         ],
 
         'api' => [
@@ -63,5 +66,13 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'admin.role' =>\App\Http\Middleware\AdminRole::class,
+        'manager.role' =>\App\Http\Middleware\ManagerRole::class,
+        'seller.role' =>\App\Http\Middleware\SellerRole::class,
+        'client.role' =>\App\Http\Middleware\ClientRole::class,
+        'account.verify' =>\App\Http\Middleware\Xverify::class,
+        'xauth' =>\App\Http\Middleware\Xauth::class,
+        'xguest' =>\App\Http\Middleware\Xguest::class,
+        
     ];
 }

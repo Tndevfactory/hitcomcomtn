@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Product;
+use App\Models\Permission;
+use App\Models\Ratingproduct;
+use App\Models\Commentproduct;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +23,22 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'role',
         'email',
+        'address',
+        'phone1',
+        'phone2',
+        'dob',
+        'genre',
         'password',
+        'user_image',
+        'active',
+        'email_verified_at',
+        'remember_token',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +58,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+
+    public function ratingproducts(){
+        return $this->hasMany(Ratingproduct::class);
+    }
+
+    public function commentproducts(){
+        return $this->hasMany(Commentproduct::class);
+    }
+    
 }

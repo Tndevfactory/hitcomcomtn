@@ -1,0 +1,117 @@
+{
+  "Arabic translation here ": "-!!!-",
+
+  "navbar": "-----------------------------------------------------------------------------",
+
+  "SELL ON HITCOM": "بيع على هيتكوم",
+  "hitcom": "هيتكوم",
+  "the shop": "المتجر",
+
+  "about us": "من نحن",
+  "contact us": "اتصل بنا",
+  "faq": "التعليمات",
+
+  "Search": "البحث",
+  "kitchen": "مطبخ",
+  "carpet": "زرابي",
+
+  "Sign in": "الدخول",
+  "Sign up": "اشتراك",
+  "Sign out": "خروج",
+  "profile admin": "المشرف العام",
+  "profile manager": "المشرف الاداري",
+  "profile seller": "ملف التاجر",
+  "profile client": "ملف الحريف",
+
+  "HOMEPAGE": "-----------------------------------------------------------------------------",
+
+  "Categories": "التصنيفات",
+  "categories": "التصنيفات",
+
+  "Products": "منتجات",
+  "Price": "الثمن",
+  "add to cart": "أضف إلى السلة",
+
+  "login register page ": "-----------------------------------------------------------------------------",
+
+  "first name": "الاسم",
+  "last name": "اللقب",
+  "password": "كلمة السر",
+  "password confirmation": " تٱكيد كلمة السر",
+  "address": "العنوان",
+  "phone": "الهاتف",
+  "forget password": "لم اتدكر كلمة السر",
+  "no account, please sign up": "لا يوجد حساب ، الرجاء التسجيل",
+  "Have an account, please sign in": " لديك حساب ، الرجاء تسجيل الدخول",
+
+  "email welcome": "-----------------------------------------------------------------------------",
+
+  "welcome mail after registration": "البريد الترحيبي بعد التسجيل",
+  "Welcome": "مرحبا",
+  "Best Regards,": "مع أطيب التحيات",
+
+  "footer  ": "-----------------------------------------------------------------------------",
+
+  "email": "الايمل",
+  "telephone": "رقم الهاتف",
+  "compagny": "شركة",
+  "tax registration number": "رقم التسجيل الضريبي",
+
+  "TABLE ARTS": "فنون المائدة",
+  "Bowls and salad bowls": "سلطانيات",
+  "Plates": "صحون",
+  "Boards and trays": "الألواح والصواني",
+  "Salt and pepper shakers": "رجاج الملح والفلفل",
+  "Cutlery and spatulas": "السكاكين والملاعق",
+  "Kitchen accessories": "اكسسوارات المطبخ",
+
+  "DECORATIONS": "الديكورات",
+
+  "Interior decoration": "الديكور الداخلي",
+  "Outdoors and gardening": "البستنة",
+  "Bathroom": "حمام",
+  "Bedding": "الفراش",
+  "Cooking and meals": "الطبخ والوجبات",
+  "Floors and carpets": "الأرضيات والسجاد",
+  "Storage and organization": "التخزين والتنظيم",
+  "Do-it-yourself": "افعلها بنفسك",
+
+  "CLOTHING": "ملابس",
+  "Bags and luggage": "الحقائب والأمتعة",
+  "Clothes and shoes": "الملابس والأحذية",
+
+  "JEWELRY": "مجوهرات",
+  "Necklaces": "قلادات",
+  "Rings": "خواتم",
+  "Wristbands": "الأساور",
+  "Earrings": "أقراط",
+  "body jewelry": "مجوهرات الجسم",
+
+  "category page": " ---------------------------------------------------------------",
+
+  "category": "الفئة",
+  "subcategories": "الفئات الفرعية",
+  "product filters": " تصنيف المنتج",
+
+  "ascendant price": "سعر تصاعدي",
+  "descendant price": "  سعر تنازلي",
+  "by name A-Z": "بالاسم تصاعدي",
+  "by name Z-A": "بالاسم تنازلي",
+
+  "ratings": "االتقييمات",
+  "price range": "نطاق السعر",
+  "product": "منتج",
+  "cart": "سلة الشراء",
+  "search": "بحث",
+  "wishlist": "قائمة الرغبات",
+
+  "product page": " ---------------------------------------------------------------",
+
+  "seller-application page": " ------------------------------------------------------",
+
+  "about us page": " ---------------------------------------------------------------",
+
+  "contact us page": " ---------------------------------------------------------------",
+  "search page": " ---------------------------------------------------------------",
+  "discount": "تخفيض"
+}

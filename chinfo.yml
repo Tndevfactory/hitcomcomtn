@@ -1,0 +1,643 @@
+$table->unsignedBigInteger('user_id');
+$table->foreign('user_id')->references('id')->on('users');
+
+You can also apply this directly to your model query. User::paginate()->withQueryString()
+ which lets you do this inside your view: {{ $users->links() }}
+
+
+
+multi-role
+
+php artisan make:model Role -m
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateRolesTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('roles');
+    }
+}
+
+
+php artisan make:migration create_role_user_table --create=role_user
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateRoleUserTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->primary(['role_id', 'user_id']);
+            $table->foreignId('role_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('role_user');
+    }
+}
+
+
+class Role extends Model
+{
+    protected $fillable = [
+        'name',
+    ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+}
+
+class User extends Authenticatable
+{
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+}
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class EnsureUserHasRole
+{
+    public function handle(Request $request, Closure $next, string $role)
+    {
+        if ($request->user()->roles()->where('name', '=', $role)->exists()) {
+            return $next($request);
+        }
+
+        abort(403);
+    }
+}
+Register the middleware
+
+Because the middleware class has a parameter, we’ll need to register it in your app/Http/Kernel.php file:
+
+protected $routeMiddleware = [
+    'role' => \App\Http\Middleware\EnsureUserHasRole::class,
+    // Other route middleware...
+];
+
+You can then apply the middleware to a route or a route group:
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    // User is authentication and has admin role
+});
+
+
+                <?php
+         
+                  {{-- var_dump(Session::all()); --}}
+                  {{-- var_dump(Auth::check()); --}}
+                  {{-- var_dump(Auth::user()); --}}
+                  {{-- var_dump(Auth::user()->role); --}}
+                  {{-- var_dump(Auth::id()); --}}
+
+                           
+              ?>
+
+
+ stock -> Product::leftJoin('stocks','stocks.id','=','products.stock_id')->selectRaw('count(products.id) as cmt')->addSelect('stock_slug')->groupBy('stocks.stock_slug')->get()
+
+
+
+
+=============================== local storage
+
+//init
+let queryArray=[];
+let arrayBigQuery=[];
+let filtresSubcategories=[];
+let filtresRatings=[];
+let inputChecks=''
+let inputChecksStorage=''
+let inputRatings=''
+let inputRatingsStorage =''
+let pricerange='';
+let tri='';
+let bigQuery=''
+
+//clear filter
+let clearFilterSection=document.querySelector('.clear-filter-section')
+let clearFilterButton=document.querySelector('.clear-filter-btn')
+
+bigQuery = JSON.parse(localStorage.getItem("arrayBigQuery")) ; 
+
+if(bigQuery !== null){ 
+    if(Object.keys(bigQuery).length > 0 ){ clearFilterSection.style.visibility='visible'} else { clearFilterSection.style.visibility='hidden' }
+    clearFilterButton.addEventListener('click', () => {localStorage.clear();  location.reload()})
+  }else{
+     clearFilterSection.style.visibility='hidden'
+  }
+
+//filtres
+
+let rating5filtreStorage=''
+let rating4filtreStorage=''
+let rating3filtreStorage=''
+
+let rating5filtre=''
+let rating5=document.querySelector('.rating5')
+
+    rating5.addEventListener('change', function (e) {
+      
+      if (this.checked) { rating5filtre={[e.target.dataset.key] : e.target.value } } else { rating5filtre='' } 
+           localStorage.setItem("rating5filtre", JSON.stringify(rating5filtre)); 
+           location.reload()
+           biqueryCollect()
+            
+      })
+    //reload
+    rating5filtreStorage = JSON.parse(localStorage.getItem("rating5filtre")) 
+    
+    if(rating5filtreStorage !== null && Object.keys(rating5filtreStorage).length > 0){
+     
+        if(rating5filtreStorage.rating5 === 'rating5'){ 
+          rating5.checked=true  
+          }
+    };
+
+let rating4filtre=''
+let rating4=document.querySelector('.rating4')
+
+    rating4.addEventListener('change', function (e) {
+      
+      if (this.checked) { rating4filtre={[e.target.dataset.key] : e.target.value }
+         } else { rating4filtre='' } 
+           localStorage.setItem("rating4filtre", JSON.stringify(rating4filtre)); 
+           location.reload()
+           biqueryCollect()
+            
+      })
+    //reload
+    rating4filtreStorage = JSON.parse(localStorage.getItem("rating4filtre")) 
+    if(rating4filtreStorage !== null && Object.keys(rating4filtreStorage).length > 0){
+        if(rating4filtreStorage.rating4 === 'rating4'){ 
+          rating4.checked=true  
+          }
+    };
+
+let rating3filtre=''
+let rating3=document.querySelector('.rating3')
+
+    rating3.addEventListener('change', function (e) {
+      
+      if (this.checked) { rating3filtre={[e.target.dataset.key] : e.target.value }
+         } else { rating3filtre='' } 
+           localStorage.setItem("rating3filtre", JSON.stringify(rating3filtre)); 
+           location.reload()
+           biqueryCollect()
+            
+      })
+    //reload
+    rating3filtreStorage = JSON.parse(localStorage.getItem("rating3filtre")) 
+    if(rating3filtreStorage !== null && Object.keys(rating3filtreStorage).length> 0){
+        if(rating3filtreStorage.rating3 === 'rating3'){ 
+          rating3.checked=true  
+          }
+    };
+
+
+
+
+let inputPricerange=document.querySelector('.pricerange')
+let amount=document.querySelector('#amount')
+
+    inputPricerange.addEventListener('change', function (e) {
+      e.stopPropagation()
+            pricerange ={[e.target.dataset.key] : e.target.value }
+            localStorage.setItem("pricerange", JSON.stringify(pricerange)); 
+            location.reload()
+        biqueryCollect()
+
+      })
+
+//reload
+  let priceRangeStorage = JSON.parse(localStorage.getItem("pricerange")) 
+
+  if(priceRangeStorage !== null && Object.keys(priceRangeStorage).length > 0){
+      inputPricerange.value = priceRangeStorage.pricerange
+      amount.value = priceRangeStorage.pricerange
+      queryArray.push(priceRangeStorage)
+      localStorage.setItem("queryArray", JSON.stringify(queryArray));
+  }
+ 
+ // tri
+
+
+let triSelect=document.querySelector('.tri')
+
+
+    triSelect.addEventListener('change', function (e) {
+      
+            triElem ={[e.target.dataset.key] : e.target.value }
+            localStorage.setItem("triSelectStorage", JSON.stringify(triElem)); 
+             location.reload()
+             biqueryCollect()
+
+      })
+//reload
+  let triSelectStorage = JSON.parse(localStorage.getItem("triSelectStorage")) 
+
+  if(triSelectStorage !== null && Object.keys(triSelectStorage).length > 0){
+      triSelect.value = triSelectStorage.tri
+      
+      queryArray.push(triSelectStorage)
+      localStorage.setItem("queryArray", JSON.stringify(queryArray));
+      
+      
+  }
+
+
+let category = document.querySelector('.category')
+ let categoryslugElem ={ 'categoryslug' : category.dataset.categoryslug }
+ localStorage.setItem("categoryslug", JSON.stringify(categoryslugElem));
+  biqueryCollect()
+
+
+let subcategory = document.querySelectorAll('.subcategory')
+subcategory.forEach(v =>{
+  v.addEventListener('click', (e)=> {
+    e.preventDefault();
+    let subcategoryslugElem ={ 'subcategoryslug' : e.target.dataset.subcategoryslug }
+    localStorage.setItem("subcategoryslug", JSON.stringify(subcategoryslugElem));
+    location.reload() 
+      biqueryCollect()
+     
+
+  })
+})
+
+
+// language
+let lang=document.querySelector('.lang').dataset.lang;
+
+// assemble all array in one 
+
+function biqueryCollect(){
+  
+let categoryslugStorage = JSON.parse(localStorage.getItem("categoryslug")) 
+let subcategoryslugStorage = JSON.parse(localStorage.getItem("subcategoryslug")) 
+
+rating5filtreStorage = JSON.parse(localStorage.getItem("rating5filtre")) 
+rating4filtreStorage = JSON.parse(localStorage.getItem("rating4filtre")) 
+rating3filtreStorage = JSON.parse(localStorage.getItem("rating3filtre")) 
+
+priceRangeStorage = JSON.parse(localStorage.getItem("pricerange")) 
+triSelectStorage = JSON.parse(localStorage.getItem("triSelectStorage"))
+
+if(categoryslugStorage !== null && Object.keys(categoryslugStorage).length > 0){arrayBigQuery=[...arrayBigQuery, categoryslugStorage] }
+if(subcategoryslugStorage !== null && Object.keys(subcategoryslugStorage).length > 0){arrayBigQuery=[...arrayBigQuery, subcategoryslugStorage] }
+
+if(rating5filtreStorage !== null && Object.keys(rating5filtreStorage).length > 0){arrayBigQuery=[...arrayBigQuery, rating5filtreStorage] }
+if(rating4filtreStorage !== null && Object.keys(rating4filtreStorage).length > 0){arrayBigQuery=[...arrayBigQuery, rating4filtreStorage] }
+if(rating3filtreStorage !== null && Object.keys(rating3filtreStorage).length > 0){arrayBigQuery=[...arrayBigQuery, rating3filtreStorage]}
+if(priceRangeStorage !== null && Object.keys(priceRangeStorage).length > 0){arrayBigQuery=[...arrayBigQuery, priceRangeStorage]}
+if(triSelectStorage !== null && Object.keys(triSelectStorage).length > 0){arrayBigQuery=[...arrayBigQuery,triSelectStorage] }
+
+localStorage.setItem("arrayBigQuery", JSON.stringify(arrayBigQuery)); 
+
+}
+
+// prepare url connection  console.log(uuidv4() );
+let queryString='?'
+
+function uriConnection(){
+let arrayBigQuery=[];
+let j=1;
+
+  arrayBigQuery= JSON.parse(localStorage.getItem("arrayBigQuery"))
+
+    if(arrayBigQuery !== null && Object.keys(arrayBigQuery).length > 0){
+      arrayBigQuery.map((v,i, arr)=>{
+        for (const [key, value] of Object.entries(v)) {
+          if(j === 1){queryString+=`${key}=${value}`}else{ queryString+=`&${key}=${value}` }
+           j=j+1
+          }
+      })
+      console.log(queryString)
+    }
+
+    
+
+    
+
+}
+uriConnection()
+
+
+let token=document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+let baseUrl=document.querySelector('meta[name="base-url"]').getAttribute('content')
+
+function categoryFilter(){
+let output=''
+  fetch(`${baseUrl}api/category/${queryString}`,{
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN': token
+    },
+  })
+  .then(res => res.json())
+  
+  .then(data => {
+   
+       
+      function renderData() { 
+        output=''; 
+        data.map((item,i) => { 
+
+          if(queryString.includes('subcategoryslug')){
+
+            if(lang==='ar'){
+
+                  console.log(item);
+                  console.log(lang)
+                  console.log('arab')
+
+            }else if(lang==='fr'){
+
+                  console.log(item);
+                  console.log(lang)
+                  console.log('french')
+
+            }else{
+
+                console.log(item);
+
+                  {{-- item.data.map(v=> {
+
+                  console.log(v.id)
+                  console.log(v.en_description)
+                  console.log(v.en_product_name)
+                  console.log(v.en_pricr)
+                  console.log(v.images[0].product_image)
+                  }); --}}
+                  
+
+            }
+
+          }else{
+
+
+          }
+            
+          
+          
+          })
+        }
+
+        renderData()
+       category.innerHTML = output;
+    })
+}
+
+  categoryFilter()
+
+{{-- let products=document.querySelector('.products') --}}
+
+
+function swr(){
+  fetch('https://jsonplaceholder.typicode.com/posts')
+  .then(res => res.json()  )
+  
+  .then(data => {
+
+        
+    let output=''
+    
+    data.map((post,i) =>{
+      output+=`
+                 <div class="col" key="${i}" >
+                    <div class="card shadow-md">
+                        <img src="https://picsum.photos/500/300" class="card-img-top" alt="...">
+                      
+                        <div class="card-body">
+                            <h5 class="card-titl fs-6"><p> ${post.title} <p></h5>
+                        
+                              <div class='price d-flex justify-content-between'>
+                                <span class="card-text fs-6">Price: 150$</span>
+                                <span class="card-text  fs-6">-35%</span>
+                                 <p> {{ __('test internationalization') }} <p>
+                              </div>
+                            
+                        </div>
+                        <div class='btn'>
+                        
+                            <a href='#' title='details'> <span class="fas fa-eye text-info"></span> </a>
+                                <a href='#' title='wish list'> <span class="fas fa-heart text-danger mx-4"></span></a>
+                                <a href='#'  title='add to cart'> <span class="fas fa-cart-plus text-success "></span></a>
+                        </div>
+                    </div>
+                 </div>
+     
+      `})
+      
+     
+
+      products.innerHTML=output
+  
+  })
+  .catch(err => console.log(err))
+
+}
+
+
+
+
+
+
+
+
+{{-- fetch --}}
+
+
+
+let  minus=document.querySelectorAll('.minus')
+let  plus=document.querySelectorAll('.plus')
+
+ minus.forEach((elem,i) => {
+    
+     elem.addEventListener("click", (e) => {
+        let inputOld = parseInt(e.target.parentElement.nextElementSibling.value)
+       inputOld-=1
+       if(inputOld > -1){
+        e.target.parentElement.nextElementSibling.value=inputOld
+       }
+
+     })
+
+ })
+ plus.forEach((elem,i) => {
+    
+     elem.addEventListener("click", (e) => {
+        let inputOld = parseInt(e.target.parentElement.previousElementSibling.value)
+       inputOld+=1
+       if(inputOld < 101){
+        e.target.parentElement.previousElementSibling.value=inputOld
+       }
+
+     })
+
+ })
+
+
+let cart=document.querySelector('.cart')
+
+let token=document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+let baseUrl=document.querySelector('meta[name="base-url"]').getAttribute('content')
+let buttonGetCart=document.querySelector('.get-cart')
+
+console.log(cart.dataset.total);
+ 
+
+function cartList(){
+
+  cart.innerHTML=' <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+  
+
+  fetch(`${baseUrl}api/cart`,{
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN': token
+    },
+  })
+  .then(res => res.json())
+  
+  .then(data => {
+
+    setTimeout( renderData ,5000)
+
+    console.log(data);
+
+      function renderData() {
+
+        output=''
+    
+        data.map((item,i) =>{
+
+          output+=`
+                    <div class="col"  >
+                        <div class="card shadow-md ">
+                            <img src="https://picsum.photos/500/300" class="card-img-top" alt="...">
+                          
+                            <div class="card-body">
+                                <h5 class="card-title test fs-6"><p > ${item.email} <p></h5>
+                            
+                                  <div class='price d-flex justify-content-between'>
+                                    <span class="card-text fs-6">Price: 150$</span>
+                                    <span class="card-text  fs-6">-35%</span>
+                                    <p> {{ __('test internationalization') }} <p>
+                                  </div>
+                                
+                            </div>
+                            <div class='btn'>
+                            
+                                <a href='#' title='details'> <span class="fas fa-eye text-info"></span> </a>
+                                    <a href='#' title='wish list'> <span class="fas fa-heart text-danger mx-4"></span></a>
+                                    <a href='#'  title='add to cart'> <span class="fas fa-cart-plus text-success "></span></a>
+                            </div>
+                        </div>
+                    </div>
+        
+          `})
+
+          cart.innerHTML=output;
+
+          let test=document.querySelector('.test');
+          console.log(test);
+
+          test.addEventListener('click', ()=>{
+          console.log('link email clicked');
+          });
+
+        }
+     
+          
+          
+      
+      })
+  .catch(err => console.log(err))
+
+}
+
+
+buttonGetCart.addEventListener('click', ()=> { cartList() })
+
+
+
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `fr_product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `en_product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ar_product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fr_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `en_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ar_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` decimal(20,2) NOT NULL,
+  `discount` decimal(20,2) DEFAULT NULL,
+  `status` enum('sold','available','stolen','damaged','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'available',
+  `subcategory_id` bigint unsigned NOT NULL,
+  `stock_id` bigint unsigned NOT NULL,
+  `seller_id` bigint unsigned NOT NULL,
+  `fee_id` bigint unsigned NOT NULL,
+  `tax_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+# To export to file (data only)
+mysqldump -u [user] -p[pass] --no-create-info mydb > mydb.sql
+
+# To export to file (structure only)
+mysqldump -u [user] -p[pass] --no-data mydb > mydb.sql
+
+# To import to database
+mysql -u [user] -p[pass] mydb < mydb.sql
+
+
+function scopeWhereName($query, $value) {
+    $query->where(\DB::raw('concat(firstname, " ", lastname)'), 'LIKE', "%{$value}%");
+}
+//then you can use it like this
+$yourQuery->whereName($request->get('term'))->get();

@@ -1,0 +1,113 @@
+{
+  "French translation here ": "-!!!-",
+
+  "navbar": "-----------------------------------------------------------------------------",
+
+  "SELL ON HITCOM": "VENDEZ SUR HITCOM",
+  "Search": "Rechercher",
+  "the shop": "la boutique",
+  "about us": " qui sommes nous",
+  "contact us": "contacter nous",
+  "kitchen": "cuisine",
+  "carpet": "tapis",
+  "Sign in": "Connexion",
+  "Sign up": "Inscription",
+  "Sign out": "déconnexion",
+  "profile admin": "profil admin",
+  "profile manager": "profil manager",
+  "profile seller": " profil vendeur ",
+  "profile client": " profil client",
+
+  "login register page ": "-----------------------------------------------------------------------------",
+
+  "first name": "prénom",
+  "last name": "nom",
+  "password": "mot de passe ",
+  "password confirmation": "  confirmation mot de passe ",
+  "address": "adresse",
+  "phone": "téléphone",
+  "forget password": "mot de passe oublié",
+  "no account, please sign up": "pas de compte, veuiller s'inscrire",
+  "Have an account, please sign in": "vous avez deja un compte, veuillez se connecter",
+
+  "HOMEPAGE": "-----------------------------------------------------------------------------",
+
+  "Categories": "Categories",
+  "categories": "Categories",
+
+  "Products": "Produits",
+  "Price": "Prix",
+  "add to cart": "ajouter au panier",
+
+  "email welcome": "-----------------------------------------------------------------------------",
+
+  "welcome mail after registration": "mail de bienvenue après inscription",
+  "Welcome": "Bienvenue",
+  "Best Regards,": "Cordialement",
+
+  "section categories ": "-----------------------------------------------------------------------------",
+
+  "email": "email",
+  "telephone": "téléphone",
+  "compagny": "sociète",
+  "tax registration number": "matricule fiscale",
+
+  "TABLE ARTS": "ARTS DE LA TABLE",
+
+  "Bowls and salad bowlss": "Bols et saladiers",
+  "Plates": "Assiettes",
+  "Boards and trays": "Planches et plateaux",
+  "Salt and pepper shakers": "Couverts et spatules ",
+  "Cutlery and spatulas": "Salières et poivrières ",
+  "Kitchen accessories": "Accessoires de cuisine ",
+
+  "DECORATIONS": "DÉCORATIONS ",
+  "Interior decoration": "Décoration d’intérieur ",
+  "Outdoors and gardening": "Extérieur et jardinage",
+  "Bathroom": "Salle de bains ",
+  "Bedding": "Literie",
+  "Cooking and meals": "Cuisine et repas",
+  "Floors and carpets": "Sols et tapis ",
+  "Storage and organization": "Rangement et organisation",
+  "Do-it-yourself": "Bricolage",
+
+  "CLOTHING": "HABILLEMENT",
+  "Bags and luggage": "Sacs et bagages",
+  "Clothes and shoes": "Vêtements et chaussures",
+
+  "JEWELRY": "BIJOUX",
+  "Necklaces": "Colliers",
+  "Rings": "Bagues",
+  "Wristbands": "Bracelets",
+  "Earrings": "Boucles d’oreilles",
+  "body jewelry": "Bijoux de corps",
+
+  "category page": " ---------------------------------------------------------------",
+
+  "category": "categorie",
+  "subcategories": "sous categories",
+  "product filters": "filtres de produits",
+
+  "ascendant price": "prix ascendant",
+  "descendant price": "prix descendant ",
+  "by name A-Z": "par nom de A-Z",
+  "by name Z-A": "par nom de Z-A",
+
+  "ratings": "notes",
+  "price range": "rang de prix",
+
+  "product": "produit",
+  "cart": "panier",
+  "search": "recherche",
+  "wishlist": "liste d'envies",
+
+  "product page": " ---------------------------------------------------------------",
+
+  "seller-application page": " ------------------------------------------------------",
+
+  "about us page": " ---------------------------------------------------------------",
+
+  "contact us page": " ---------------------------------------------------------------",
+  "search page": " ---------------------------------------------------------------",
+  "discount": "remise"
+}

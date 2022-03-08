@@ -4,26 +4,24 @@
  <meta name="author" content="ch">
 @endsection
 
-@section('title', 'login')
+@section('title', 'checkout')
 
 
 @section('css')
 <style>
-.t{
-    color:red;
-}
+
 </style>
 @endsection
 
 
 @section('content')
 
-<p class='t'> login </p>
+<p class='t'> checkout </p>
 @endsection
 
 
 @section('js')
 <script>
-alert(1)
+
 </script>
 @endsection
