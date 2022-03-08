@@ -641,3 +641,16 @@ function scopeWhereName($query, $value) {
 }
 //then you can use it like this
 $yourQuery->whereName($request->get('term'))->get();
+
+
+storage-link server
+
+ln -s /home3/hxynpjkf/public_html/storage/app/public /home3/hxynpjkf/public_html/public
+
+best way to add package @@@@@@@@@@@@@@@@@@@@@@
+
+1 copy in composer the package
+
+run cron 
+
+cd /home3/hxynpjkf/public_html && php composer.phar update --no-dev > /home3/hxynpjkf/public_html/composer.txt
