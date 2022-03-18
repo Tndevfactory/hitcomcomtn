@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Policies\PermissionPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        if (! $this->app->routesAreCached()) {
+            Passport::routes();
+        }
     }
 }

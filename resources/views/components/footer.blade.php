@@ -1,28 +1,4 @@
 
- @php   $menu_categories = session()->get('menu');  @endphp
-
-<style>
-.foot {
-
- 
-  color:white;
-  background-image: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.15) 200%),
-  url('{{ app()->environment('production') ? asset('public/media/ui/footer/footer.jpg') : asset('media/ui/footer/footer.jpg')}}');
- background-blend-mode: multiply;
-  background-size: cover;
-  background-repeat:no-repeat;
-}
-
-.copyright{
-background-color:rgba(0,0,0,0.1);
-}
-
-
-</style>
-
-
-
-
 <footer class=" foot pt-1 px-5" style=''>
   
  <div class="container-fluid mt-3 py-3">
@@ -96,7 +72,7 @@ background-color:rgba(0,0,0,0.1);
       @endforeach 
    </div>
  </div>
-        
+ 
       
 
 <div class=' copyright  d-flex justify-content-center align-items-center py-3 py-md-1'>

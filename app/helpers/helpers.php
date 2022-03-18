@@ -1,12 +1,21 @@
 <?php
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
 /**
  * @param $value
  * @return string
  */
+function euroPrice($value){
+    
+   $currency = DB::table('currencies')->where('name','euro')->first();
+   $euro_value = $value * $currency->value_in_dollar;
+    
+    return (float)$euro_value ;
+}
+
 function numericFormat($value){
     
     $value = Str::replace(',', '.', $value);

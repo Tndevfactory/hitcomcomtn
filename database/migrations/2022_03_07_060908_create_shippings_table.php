@@ -16,7 +16,8 @@ class CreateShippingsTable extends Migration
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('rate');
+            $table->string('value');
+            $table->enum('active', [0, 1])->default(1);
             $table->timestamps();
         });
     }

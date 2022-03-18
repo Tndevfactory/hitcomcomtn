@@ -654,3 +654,15 @@ best way to add package @@@@@@@@@@@@@@@@@@@@@@
 run cron 
 
 cd /home3/hxynpjkf/public_html && php composer.phar update --no-dev > /home3/hxynpjkf/public_html/composer.txt
+
+
+
+rm -rf node_modules/
+rm package-lock.json
+npm cache verify
+npm i && npm up
+
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+// $output = new ConsoleOutput();
+ $output->writeln('debugging cache manipulation ');

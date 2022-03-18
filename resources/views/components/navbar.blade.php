@@ -1,246 +1,24 @@
 
- @php
-        $theme = session()->get('theme');
-        
- @endphp
+@php
 
-<style>
-        .header-bar{
-          height:8vh;
-          background: rgb(0,212,255);
-          background: {{ $theme->name == 'dark' ? '#E000bb !important' : 
-          'linear-gradient(198deg, rgba(0,212,255,1) 0%, rgba(53,143,209,1) 23%, rgba(65,139,210,1) 71%, rgba(0,212,255,1) 100%)'  }} ;
-           
-        }
+// engine s
 
-        .cart-counter{
-          top:-5px ; 
-          left:100%!important; 
-          font-size:0.7rem;
-         
-        }
-        
-        .currency{
-          inset: -10px auto auto -1px!important;
-        z-index: 9999!important;
-        min-width: 3rem;
-        }
-
-        .language{
-            inset: -10px auto auto -1px!important;
-            z-index: 9999!important;
-            min-width: 3rem;
-        }
-                      
-
-        .navigation-bar{
-          
-          box-shadow: rgba(9, 30, 66, 0.15) 0px 1px 2px ;
-          z-index:999;
-
-          position: -webkit-sticky;
-          position: sticky;
-          top: 0;
-
-          background: {{ $theme->name == 'dark' ? '#ECE9bb !important' : '#ECE9E6 !important'  }} ;  /* fallback for old browsers */
-         /* background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6) !important; 
-          background: linear-gradient(to right, #FFFFFF, #ECE9E6) !important;   */
+//cache()->flush();
+$currency=session()->get('currency');
 
 
-        
-        }
+ cache()->put('currency', $currency );
        
-
-          .hover-navlink{
-            color:#666;
-            transition:0.3s;
-          }
-          .hover-navlink:hover{
-            color:dodgerblue;
-          }
+ cache()->put('language', Request()->language);
 
 
-        
-
-        .menu-deroulant{
-          display: none !important;
-         background:white;
-          opacity: 0;
-
-        }
-       
-
-        .menu-trigger:hover .menu-deroulant{
-           
-          display: block !important;
-          -webkit-animation: slideDown .5s;
-         /* height: 10rem;*/
-              opacity: 1;
-        }
-
-
-        .item-l1 {
-          opacity:0;
-          transition: 0.8s ;
-          
-        }
-
-        .menu-trigger:hover .item-l1{
-           -webkit-animation: slideDownitemL1 1s;
-                      opacity: 1;
-
-          }
-
-        @keyframes slideDownitemL {
-                    from {
-                      
-                      opacity: 0;
-                    }
-                    to {
-                      
-                      opacity: 1;
-                    }
-                }
-        @keyframes slideDown {
-                    from {
-                    /*  height: 0rem;*/
-                      opacity: 0;
-                    }
-                    to {
-                    /*  height: 10rem;*/
-                      opacity: 1;
-                    }
-                }
-
-
-        .menu-deroulant-l2{
-          display: none !important;
-         background:white;
-          width: 50rem;
-          opacity: 0;
-
-        }
-
-        .menu-trigger-l2:hover .menu-deroulant-l2{
-           
-          display: block !important;
-          width: 50rem;
-          -webkit-animation: slideDownL2 0.51s;
-             animation: slideDownL2 0.51s;
-        
-              opacity: 1;
-        }
-
-       
-        @keyframes slideDownL2 {
-            from {
-           
-              opacity: 0;
-            }
-            to {
-            
-              opacity: 1;
-            }
-        }
-
-.search-zone{
-  background:transparent !important;
-}
-.search-div{ 
-   position:absolute;
-    opacity: 0;
-   display:none !important;
-   
-}
-.search-input-div{ 
-    position: absolute;
-    
-    width: 199px;
-    display:inline-block !important;
-
-}
-.search-input-div .form-control-sm{ 
- border-radius:0px !important;
-
-}
-button.search{
-  border-radius:0px !important;
-  background:#999;
-}
-
-.search-zone:hover .search-div{ 
-    display:inline-block !important;
-    -webkit-animation: searchAnim 1s;
-     animation: searchAnim 1s;
-    opacity: 1;
-   }
-   
- @keyframes searchAnim {
-                    from {
-                      
-                      opacity: 0;
-                    }
-                    to {
-                      
-                      opacity: 1;
-                    }
-                }
-
-
-          .menu-cnx-trigger{
-                
-              background:transparent;
-              }
-
-        .menu-cnx-deroulant{
-              display: block !important;
-              background:white;
-              opacity: 0;
-
-           }
-
-        .menu-cnx-trigger:hover .menu-cnx-deroulant{
-             display: block !important;
-            -webkit-animation: menuCnxDeroulantAnim 0.51s;
-             animation: menuCnxDeroulantAnim 0.51s;
-             opacity: 1;
-        }
-
-        @keyframes menuCnxDeroulantAnim {
-                    from {
-                      
-                      opacity: 0;
-                    }
-                    to {
-                      
-                      opacity: 1;
-                    }
-                }
-
-        .list-item{
-          color:#555;
-          padding:0rem 1rem;
-          margin:4px 0px;
-        }
-        .list-item:hover{
-          background-color:rgba(0,0,0,0.1);
-         
-        }
-
-        .link-item{
-          color:#555;
-          text-decoration:none;
-          font-size:0.9rem;
-        }
-
-      
-</style>
+@endphp
 
 <div class=' header-bar bg-info d-flex align-items-center justify-content-between '> 
     <div class='px-3 px-md-4 container-fluid d-flex align-items-center justify-content-between'>
         
        <a href='{{ route('seller-application', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}' class='text-decoration-none'>
-        <span class='fs-6 fw-bold ms-md-3' style="color:white; text-shadow:1px 1px rgba(0,0,0,0.6)"> ⭐️ {{ __('SELL ON HITCOM')}} </span>
+        <span class=' sell-on-hitcom' > ⭐️ {{ __('sell on hitcom')}} </span>
        </a>
      
         <div class='d-flex z-index-9'>  
@@ -319,83 +97,180 @@ button.search{
     </div>
 </div>
 
-@php
-
- //$getQueryString=Request()->fullUrl();
- //$getQueryString = Request()->path();
- //$getQueryString = Request()->fullUrlWithQuery(['currency' => Request()->currency]);
- //$getQueryString = Request()->getQueryString();
- // dd($getQueryString); 
-
-  $menu_categories = session()->get('menu');
-
-@endphp
-
-<style>
-.navigation-bar{
-          
-          box-shadow: rgba(9, 30, 66, 0.15) 0px 1px 2px ;
-          z-index:999;
-
-          /* position: -webkit-sticky;
-          position: sticky;
-          top: 0px; */
-
-          background: #ECE9E6;  /* fallback for old browsers */
-          background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
-          background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
-        
-        }
-
-        .fixed{
-          position:fixed;
-          width:100%;
-          left:0px;
-          top:0px;
-         /* background:crimson;*/
-        }
-
-
-  @media only screen and (max-width:700px){
-              
-              .cart-counter{
-                margin-top:6px;
-              left:10%!important;   
-            
-                }
-
-              .fixed{
-              position:fixed;
-              width:100%;
-              left:0px;
-              top:0px;
-              /* background:crimson;*/
-            }
-              
-          }
-</style>
 <nav class=" navigation-bar navbar navbar-expand-lg navbar-light  " >
 
-  <div class="container-fluid">
+  <div class="container-fluid d-flex align-items-center ">
 
-    @include('components.offcanvas-menu')
+      <div class='brand-title offcanva d-flex align-items-center gap-2 justify-content-center'>
+        @include('components.offcanvas-menu')
 
-    <a class="text-decoration-none  navbar-brand"  href="{{ route('home', App::getLocale())}}"> 
+        <a class="text-decoration-none  navbar-brand"  href="{{ route('home', App::getLocale())}}"> 
 
-      <img src='{{ app()->environment('production') ? asset('public/media/ui/logo/hitcom-logo.jpg') : asset('media/ui/logo/hitcom-logo.jpg')}}' 
-          style='width:3rem;height:3rem; border-radius:50%; border:1px #fff solid;padding:1px' alt=''/>
+          <img src='{{ app()->environment('production') ? asset('public/media/ui/logo/hitcom-logo.jpg') : asset('media/ui/logo/hitcom-logo.jpg')}}' 
+              style='width:2.3rem;height:2.3rem; border-radius:50%; border:2px #fff solid;padding:0px; margin-top:-6px;' alt=''/>
 
-      <span class='text-lead h4 text-uppercase products-title  d-inline-block '>  {{ __('hitcom') }}</span>
+          <span class='text-lead h4 text-uppercase products-title  d-inline-block '>  {{ __('hitcom') }}</span>
+          
+        </a>
+      </div>
+
+      <div class='mobile-view  d-md-none d-flex align-items-center mt-2'> 
+
+          <div class=' notification-mobile '>
+
+              @auth
+                  @switch(Auth::user()->role)
+                      @case('admin')
+                           <a title='notifications link' href="{{route('admin-notifications-list', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"
+                            class='text-decoration-none'> 
+                            
+                                  @if(Auth::user()->unreadNotifications->count() > 0)
+                                    <span class="position-relative d-inline-block top-20 badge rounded-pill bg-danger" 
+                                          style='top:-20px;{{App::getLocale() === 'ar' ? 'right:15px ' : 'left:15px '}}'>
+                                          {{Auth::user()->unreadNotifications->count()}}
+                                    </span>
+                                  @endif
+                              
+                              <i class="fa-solid fa-bell text-secondary  @guest ms-3 @endguest @auth   @if(Auth::user()->unreadNotifications->count() <= 0) ms-3 @endif @endauth"></i>
+                          </a>
+                          @break
+                      @case('manager')
+                            <a title='notifications link' href="{{route('admin-notifications-list', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"
+                              class='text-decoration-none'> 
+                              
+                                    @if(Auth::user()->unreadNotifications->count() > 0)
+                                      <span class="position-relative d-inline-block top-20 badge rounded-pill bg-danger" 
+                                            style='top:-20px;{{App::getLocale() === 'ar' ? 'right:15px ' : 'left:15px '}}'>
+                                            {{Auth::user()->unreadNotifications->count()}}
+                                      </span>
+                                    @endif
+                                
+                                <i class="fa-solid fa-bell text-secondary  @guest ms-3 @endguest @auth   @if(Auth::user()->unreadNotifications->count() <= 0) ms-3 @endif @endauth"></i>
+                            </a>
+                          @break
+                      @case('seller')
+                            <a title='notifications link' href="{{route('admin-notifications-list', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"
+                              class='text-decoration-none'> 
+                              
+                                    @if(Auth::user()->unreadNotifications->count() > 0)
+                                      <span class="position-relative d-inline-block top-20 badge rounded-pill bg-danger" 
+                                            style='top:-20px;{{App::getLocale() === 'ar' ? 'right:15px ' : 'left:15px '}}'>
+                                            {{Auth::user()->unreadNotifications->count()}}
+                                      </span>
+                                    @endif
+                                
+                                <i class="fa-solid fa-bell text-secondary  @guest ms-3 @endguest @auth   @if(Auth::user()->unreadNotifications->count() <= 0) ms-3 @endif @endauth"></i>
+                            </a>
+                          @break
+                      @default
+                            <a title='notifications link' href="{{route('client-notifications-list', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"
+                              class='text-decoration-none'> 
+                              
+                                    @if(Auth::user()->unreadNotifications->count() > 0)
+                                      <span class="position-relative d-inline-block top-20 badge rounded-pill bg-danger" 
+                                            style='top:-20px;{{App::getLocale() === 'ar' ? 'right:15px ' : 'left:15px '}}'>
+                                            {{Auth::user()->unreadNotifications->count()}}
+                                      </span>
+                                    @endif
+                                
+                                <i class="fa-solid fa-bell text-secondary  @guest ms-3 @endguest @auth   @if(Auth::user()->unreadNotifications->count() <= 0) ms-3 @endif @endauth"></i>
+                            </a>
+                  @endswitch
+              
+           @endauth
+         </div>
+
+
+         {{-- <div class=' cart-mobile position-relative mx-2' style='{{Auth::check() ? "margin-bottom:1px" : "margin-bottom: 16px"}};'>
+            <a href='{{ route('show-cart', ['currency' => Request()->session()->get('currency'), 'language' => App::getLocale()]) }}'
+             class='text-dark text-decoration-none' title='cart list'>
+                <span class="position-absolute   badge rounded-pill bg-danger" 
+                style='top:-15px;font-size:.8rem; {{App::getLocale() === 'ar' ? 'right:13px ' : 'left:13px '}}'
+                >{{ $total_qty }}</span><i class="fas fa-shopping-cart text-dark"></i>
+            </a>
+        </div> --}}
+        <div class="d-block d-md-none">
+            <cart-counter-mobile
+            view='mobile'
+            currency={{ $currency }}
+            language={{ Request()->language }}
+            csrf-token="{{ csrf_token() }}"
+          ></cart-counter-mobile>
+        </div>
+       
+
+
+          <div class=' connexion-mobile ms-2 '>
+            
+            <ul class="list-unstyled ">
+          
+              <li class="nav-item dropdown menu-cnx-trigger  text-center position-relative">
+            
+                <a class=" dropdown-toggle d-inline-block text-decoration-none text-secondary" href="#" style='{{Auth::check() ? "margin-top:10px" : "margin-top: 0px"}};' >
+                    @guest <i class="fas fa-user-circle text-secondary " style='padding-top:1.1rem;font-size:1.2rem'></i> @endguest
+
+                    @auth  
+                    <img src={{app()->environment('production') ?  asset('public/'.Auth::user()->user_image) : asset(Auth::user()->user_image) }} 
+                    title="{{Auth::user()->first_name}} " 
+                    height=35 width=35 class='rounded-circle mt-n2 d-inline-block' alt='user'>
+                    @endauth
+                </a>
+            
+                  <ul class='menu-cnx-deroulant list-unstyled rounded-sm shadow-sm py-1 position-absolute d-flex justify-content-start'
+                  style='top:2.6rem; {{App::getLocale() === 'ar' ? 'left:14px; ' : 'right:14px;'}} '>
+                    @guest
+                    <li class="list-item" ><a class="link-item text-nowrap" href="{{ route('login', App::getLocale())}}"> {{ __('Sign in') }}</a></li>
+                    <li class="list-item" ><a class="link-item text-nowrap" href="{{ route('register-form', App::getLocale())}}"> {{ __('Sign up') }}</a></li>
+                    @endguest
+
+                    @auth
+
+                      @switch(Auth::user()->role)
+                          @case('admin')
+                              <li class="list-item  text-start ps-3 " ><a  class="link-item text-nowrap" 
+                              href="{{ route('admin-users-list', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"> {{ __('profile admin') }}</a></li>
+                              @break
+                          @case('manager')
+                              <li class="list-item  text-start ps-3 " ><a  class="link-item text-nowrap" 
+                              href="{{ route('manager-profile', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"> {{ __('profile manager') }}</a></li>
+                              @break
+                          @case('seller')
+                              <li class="list-item  text-start ps-3 " ><a  class="link-item text-nowrap" 
+                              href="{{ route('seller-profile', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"> {{ __('profile seller') }}</a></li>
+                              @break
+                          @default
+                              <li class="list-item  text-start ps-3 " ><a  class="link-item text-nowrap" 
+                              href="{{ route('client-profile', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"> {{ __('profile client') }}</a></li>
+                      @endswitch
+                            <li class="list-item  text-start ps-3" ><a  class="link-item text-nowrap"  href="{{ route('auth-logout', App::getLocale())}}"> {{ __('Sign out') }}</a></li>
+                  
+                    @endauth
+                  </ul>
+
+              </li>
+            </ul> 
+          </div>
+
       
-    </a>
-    
+      </div> {{-- end mobile-view cart --}}
 
-    
+      <div class='search-zone mobile-view mx-auto  d-md-none '> {{--  mobile-view  search --}}
+             <form class="" method='GET' action='{{route('search-query', [ 'language' => Request()->language])}}'>
 
+              <div class='d-inline-block search-di'>
+                  <div class=' search-input-di ' style='top: 0px;{{App::getLocale() === 'ar' ? 'left: 0px; ' : 'right: 0px; '}} '>
+                      <input name='item' class=" form-control form-control-sm"   value="{{ Request()->item ?? '' }}"
+                      placeholder="{{ __('Search') }}" >
+                  </div>
+              </div>
+            
+              <button class="search-btn btn btn-sm btn-primary" type="submit" style='margin-left:-5px'> <i class="fa-solid fa-magnifying-glass text-white"></i></button>
+              </form>
+       </div>{{-- end mobile-view search --}}
     
-    <div class="collapse navbar-collapse d-none d-md-block  " id="navbarSupportedContent">
+    <div class="desktop-view collapse navbar-collapse d-none d-lg-block  " id="navbarSupportedContent">
      
       <ul class="navbar-nav mx-auto mb-2 mt-2 mb-lg-0 pb-3">
      
@@ -409,7 +284,7 @@ button.search{
 
                   <a href='{{ route('show-category' ,
                    ['slug'=> $category->category_slug ?? 'table' , 'currency'=> Request()->session()->get('currency'),  'language' => App::getLocale()])}}' 
-                  class='item-l1 text-decoration-none  hover-navlink link-item ' > 
+                  class='item-l1 text-decoration-none  link-item ' > 
                   
                     <i class="{{ $category->icon }} me-2"></i> 
                     
@@ -424,7 +299,7 @@ button.search{
                         @endif 
 
                    <i class="fa-solid  {{App::getLocale() === 'ar' ? 'fa-chevron-left' : 'fa-chevron-right'}}" style='font-size:0.6rem'></i></a> 
-                     <div class='menu-deroulant-l2 bg-light rounded-sm shadow 
+                     <div class='menu-deroulant-l2 bg-white  shadow 
                       position-absolute  px-3 d-flex justify-content-center' style='top:-1px;{{App::getLocale() === 'ar' ? 'right:9.70rem;' : 'left:9.70rem;'}}'>
                      
                           <div class=' row row-cols-3 my-3 '>
@@ -458,26 +333,31 @@ button.search{
         </li>
 
         <li class="nav-item dropdown">
-          <a class="btn btn-transparent  ms-3 hover-navlink  fw-bold 
-           animate__animated animate__fadeIn animate__delay-1s animate__fast" href="{{ route('home', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}" 
-           style='font-variant: small-caps;font-size:1.2rem'> {{ __('the shop') }} </a>
+          <a class="btn btn-transparent  ms-3 hover-navlink  
+           animate__animated animate__fadeIn animate__delay-1s animate__fast" 
+           href="{{ route('home', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}" 
+           style='font-variant: small-caps;font-size:1.3rem'> {{ __('the shop') }} </a>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="btn btn-transparent   hover-navlink  fw-bold 
-           animate__animated animate__fadeIn animate__delay-1s animate__fast" href="{{ route('about-us', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}" 
-            style='font-variant: small-caps;font-size:1.2rem'> {{ __('about us') }} </a>
-        </li>
+          <a class="btn btn-transparent   hover-navlink  
+           animate__animated animate__fadeIn animate__delay-1s animate__fast" 
+           href="{{ route('about-us', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}" 
+            style='font-variant: small-caps;font-size:1.3rem'> {{ __('about us') }} </a>
+            
+          </li>
 
         <li class="nav-item dropdown">
-          <a class="btn btn-transparent  hover-navlink  fw-bold 
-           animate__animated animate__fadeIn animate__delay-1s animate__fast" href="{{ route('contact-us', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}"
-             style='font-variant: small-caps;font-size:1.2rem'> {{ __('contact us') }}  </a>  
+          <a class="btn btn-transparent  hover-navlink  
+           animate__animated animate__fadeIn animate__delay-1s animate__fast" 
+           href="{{ route('contact-us', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}"
+             style='font-variant: small-caps;font-size:1.3rem'> {{ __('contact us') }}  </a>  
        </li>
         <li class="nav-item dropdown">
-          <a class="btn btn-transparent  hover-navlink  fw-bold 
-           animate__animated animate__fadeIn animate__delay-1s animate__fast" href="{{ route('contact-us', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}"
-             style='font-variant: small-caps;font-size:1.2rem'> {{ __('faq') }}  </a>  
+          <a class="btn btn-transparent  hover-navlink  
+           animate__animated animate__fadeIn animate__delay-1s animate__fast" 
+           href="{{ route('contact-us', ['currency' => session()->get('currency'), 'language' => Request()->language]) }}"
+             style='font-variant: small-caps;font-size:1.3rem'> {{ __('faq') }}  </a>  
        </li>
        
       </ul>
@@ -487,13 +367,15 @@ button.search{
 
         <div class='search-zone'>
 
-            <div class='d-inline-block search-div'>
-                <div class=' search-input-div ' style='top: 0px;{{App::getLocale() === 'ar' ? 'left: 0px; ' : 'right: 0px; '}} '>
-                    <input name='item' class=" form-control form-control-sm"  placeholder="{{ __('Search') }}" >
+            <div class='d-inline-block search-di'>
+                <div class=' search-input-di ' 
+                style='position:relative; width:22rem; {{App::getLocale() === 'ar' ? 'left: 0px; margin-left:-5px;top: -3px;' : 'right: 0px; margin-right:-5px;top: 0px;'}} '>
+                    <input name='item' class=" form-control form-control-sm"  value="{{ Request()->item ?? '' }}" 
+                    placeholder="{{ __('Search') }}" >
                 </div>
             </div>
            
-            <button class="search-btn btn btn-sm btn-default" type="submit"> <i class="fa-solid fa-magnifying-glass text-secondary"></i></button>
+            <button class="search-btn btn btn-sm btn-primary" type="submit"> <i class="fa-solid fa-magnifying-glass text-white"></i></button>
         </div>
             
         
@@ -502,7 +384,7 @@ button.search{
 
       <div class=' my-2 my-md-0 '>
 
-      @auth
+              @auth
                   @switch(Auth::user()->role)
                       @case('admin')
                            <a title='notifications link' href="{{route('admin-notifications-list', [ 'language' => Request()->language, 'id' => Auth::id() ])}}"
@@ -578,32 +460,24 @@ button.search{
           </a>
       </div>
       
-        @php 
-
-        if(session()->get('compta')){
-           
-            $compta=session()->get('compta');
-            if($compta['total_qty']==0){
-              $total_qty='';
-            }else{
-              $total_qty=$compta['total_qty'];
-            }
-          
-            
-          }else{
-            $total_qty='';
-          };
-
-        @endphp
+       
         
-      <div class='mx-2 my-2 my-md-0  position-relative'>
+      {{-- <div class='mx-2 my-2 my-md-0  position-relative'>
           <a href='{{ route('show-cart', ['currency' => Request()->session()->get('currency'), 'language' => App::getLocale()]) }}' class='text-secondary' title='cart list'>
               <span class="position-absolute   badge rounded-pill bg-danger" 
               style='top:-15px;font-size:.8rem; {{App::getLocale() === 'ar' ? 'right:13px ' : 'left:13px '}}'
               >{{ $total_qty }}</span><i class="fas fa-shopping-cart"></i>
           </a>
+      </div> --}}
+      <div class="d-none d-md-block">
+      <cart-counter 
+      view='desktop'
+        currency={{ $currency }}
+        language={{ Request()->language }}
+        csrf-token="{{ csrf_token() }}"
+       ></cart-counter>
       </div>
-      
+
     
 
       <div class=' my-2 my-md-0 '>
@@ -653,53 +527,10 @@ button.search{
               </ul>
 
           </li>
-      </ul> 
+        </ul> 
       </div>
     </div>
 
   </div>
 </nav>
 
- @push('script')
-<script>
-
-  let navigationBar = document.querySelector(".navigation-bar");
-   
-
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function(e) {
-          // print "false" if direction is down and "true" if up
-           
-
-            console.log(this.oldScroll > this.scrollY);
-            
-            if(this.oldScroll > this.scrollY){
-              console.log('up scroll');
-              navigationBar.classList.remove('fixed')
-            }else{
-              navigationBar.classList.add('fixed')
-            }
-
-             this.oldScroll = this.scrollY;
-          navScroll()
-    };
-
-    function navScroll() {
- 
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-       // navigationBar.classList.add('fixed')
-        
-    } else {
-       // navigationBar.classList.remove('fixed')
-        
-    }
-    }
-
-    // When the user clicks on the button, scroll to the top of the document
-    function topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    }
-
-</script>
-@endpush

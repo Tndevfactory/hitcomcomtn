@@ -1,3 +1,43 @@
+
+
+        @php 
+        
+        if(session()->get('cart')){
+            
+            $cart = session()->get('cart');
+
+           ;
+        }else{
+            
+            $cart=[];
+        };
+
+       
+
+        if(session()->get('compta')){
+             
+            
+            $compta=session()->get('compta');
+
+          
+        }else{
+           
+            $compta=[
+                'total_qty' => 0,
+                'totat_price_ht' => 0,
+                'totat_discount' => 0,
+                'total_taxes'  => 0,
+                'total_before_coupon' => 0,
+                'coupon_value' => 0,
+                'shipment_fee' => 0,
+                'total_ttc'=> 0,
+                'currency'=> '',
+                ];
+        };
+        
+        @endphp
+    
+
 @extends('base')
 
 @section('meta')
@@ -43,45 +83,8 @@
     </nav>
 
     
-        @php 
-        
-        if(session()->get('cart')){
-            
-            $cart = session()->get('cart');
 
-           ;
-        }else{
-            
-            $cart=[];
-        };
-
-       
-
-        if(session()->get('compta')){
-             
-            
-            $compta=session()->get('compta');
-
-          
-        }else{
-           
-            $compta=[
-                'total_qty' => 0,
-                'totat_price_ht' => 0,
-                'totat_discount' => 0,
-                'total_taxes'  => 0,
-                'total_before_coupon' => 0,
-                'coupon_value' => 0,
-                'shipment_fee' => 0,
-                'total_ttc'=> 0,
-                'currency'=> '',
-                ];
-        };
-        
-        @endphp
-    
-
-    <div class='row row-cols-1 row-cols-md-2 cart-details'>
+  <div class='row row-cols-1 row-cols-md-2 cart-details'>
 
 
         <div class='col-12 col-md-8 '>
@@ -104,7 +107,10 @@
                     </thead>
                     <tbody>
 
-                    <form method='GET' action='{{ route('update-cart-quantity-item', [ 'currency'=> Request()->session()->get('currency'), 'language' => App::getLocale()]) }}'>
+                    <form method='GET' action='{{ route('update-cart-quantity-item', [ 
+                                                       'currency'=> Request()->session()->get('currency'), 
+                                                       'language' => App::getLocale()
+                                                        ]) }}'>
                         
                         <input type='hidden' name='currency' value='{{ Request()->session()->get('currency')  }}' />
                         <input type='hidden' name='language' value='{{ App::getLocale() }}' />
@@ -128,25 +134,34 @@
                                 
                                 </td>
                                 <td>{{ $v['currency'] === 'euro' ? number_format($v['price'], 2,',',' ').'€': '$'.number_format($v['price'],2,'.',',') }}</td>
-                                <td><a href='{{ route('delete-cart-item', ['product_id' => $v['id'] , 'currency'=> Request()->session()->get('currency'), 'language' => App::getLocale()]) }}'><i title='delete order item' class="fa-solid fa-trash-can text-danger"></i></a></td>
+                                <td><a href='{{ route('delete-cart-item', ['product_id' => $v['id'] , 
+                                                                           'currency'=> Request()->session()->get('currency'),
+                                                                           'language' => App::getLocale()]) }}'>
+                                 <i title='delete order item' class="fa-solid fa-trash-can text-danger"></i></a></td>
                             
                                 </tr>
                         @empty
                             <tr>
-                                <td colspan ='5' class='text-capitalize text-center' style='background-color:#FFB6C1'> 
+                                <td colspan ='5' class='text-capitalize text-center bg-light' > 
                                 {{ __('your Shoping cart is empty') }} 
                                 <a class="text-decoration-none btn btn-outline-primary btn-sm ms-3"  href="{{ route('home', App::getLocale())}}">
-                                        {{ __('back to shop') }}
+                                        <i class="fa-solid fa-circle-arrow-left"></i> {{ __('back to shop') }}
                                 </a>
                                 </td>
                             </tr>
                         @endforelse
+
                     </form>
+
                     </tbody>
                 </table>
         </div>
 
-        <div class='col-12 col-md-4'>
+
+
+{{-- paste here --}}
+
+ <div class='col-12 col-md-4'>
           <form method='get' action='{{ route('view-order-invoice', ['currency'=> Request()->session()->get('currency'), 'language' => App::getLocale()]) }}'>
 
               <ul class="list-group">
@@ -154,22 +169,53 @@
 
                   
                   <li class="list-group-item d-flex justify-content-between align-items-center"  style='font-size:0.9rem;'>
+                      {{ __('Order currency ') }}
+                      <span class="text-dark fw-bold " style='font-size:0.9rem;'>{{ isset($compta['currency']) ? $compta['currency'] : '' }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center"  style='font-size:0.9rem;'>
                       {{ __('# articles ') }}
-                      <span class="text-dark fw-bold " style='font-size:0.9rem;'>{{ $compta['total_qty'] }}</span>
+                      <span class="text-dark fw-bold " style='direction:ltr;font-size:0.9rem;'>{{ isset($compta['total_qty']) ? $compta['total_qty'] : ''}}</span>
                   </li>
                   
                   <li class="list-group-item d-flex justify-content-between align-items-center "  style='font-size:0.9rem;'>
                         {{ __('Total excluding VAT ') }}
-                        <span class="text-dark fw-bold" style='font-size:0.9rem;'>{{ $compta['totat_price_ht'] }}</span>
+                        <span class="text-dark fw-bold" style='direction:ltr;font-size:0.9rem;'>{{ isset($compta['totat_price_ht']) ? $compta['totat_price_ht'] : '' }}</span>
                   </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-center "  style='font-size:0.9rem;'>
+                        {{ __('Total discount') }}
+                        <span class="text-dark fw-bold" style='direction:ltr;font-size:0.9rem;'>{{ isset($compta['totat_discount']) ? $compta['totat_discount']: ''}}</span>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-center "  style='font-size:0.9rem;'>
+                        {{ __('Total taxes') }}
+                        <span class="text-dark fw-bold" style='direction:ltr;font-size:0.9rem;'>{{ isset($compta['total_taxes']) ? $compta['total_taxes'] : '' }}</span>
+                  </li>
+
                   <li class="list-group-item d-flex justify-content-between align-items-center " style='font-size:0.9rem;'>
                       {{ __('Shipment fees') }}
-                        <span class="text-dark fw-bold" style='font-size:0.9rem;'>{{ $compta['shipment_fee'] }}</span>
+                        <span class="text-dark fw-bold" style='direction:ltr;font-size:0.9rem;'>{{ isset($compta['shipment_fee']) ? $compta['shipment_fee'] : ''}}</span>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-center "  style='font-size:0.9rem;'>
+                      {{ __('Total') }}
+                      
+                        <span class="text-dark fw-bold"  dir='ltr' style='direction:ltr; font-size:0.9rem;'>
+                     
+                      @if(isset($compta['total_ttc_before_coupon']))
+
+                        {{ $compta['currency']  == 'euro' ? number_format($compta['total_ttc_before_coupon'],2,',',' ') : number_format($compta['total_ttc_before_coupon'],2,'.',',')  }}
+
+                      @else
+                      ''
+
+                      @endif
+                        </span>
                   </li>
 
                   <li class="list-group-item d-flex justify-content-between align-items-center "  style='font-size:0.9rem;'>
                       {{ __('Coupon code') }}
-                        <input name='coupon_code' class="text-dark fw-bold" style='font-size:0.9rem;' />
+                        <input name='coupon_code' class="form-control form-control-sm text-dark fw-bold" style='font-size:0.9rem;width:15rem' />
                   </li>
                   
                   <li class="list-group-item d-grid">
@@ -185,35 +231,40 @@
     </div>{{-- end row shoppingcart --}}
 
     @auth
-<span class="text-start d-block fw-bold mb-3">ℹ️ {{ __('If you wish to receive the order in another address, please indicate/choose the shipping address') }} </span>
-    <div class='row'>
-          <div class='col col-md-6 '>
-              
-              @if(Auth::user()->shipment_address)
-                <div class="col-md-12 mb-3">
-                  
-                  <input type="checkbox"  style="direction: {{ App::getLocale() == 'ar' ? 'rtl' : 'ltr' }}" 
-                  value="saved_shipping_address" class="form-check-input" name="shipping_address">
+    @if($compta['total_qty'] !== 0)
+      <span class="text-start d-block text-muted mb-3">ℹ️ {{ __('If you have another shipping address please insert it and click on checkout button') }} </span>
+          <div class='row'>
+                <div class='col col-md-6 '>
+                    
+                    @if(Auth::user()->shipment_address)
+                      <div class="col-md-12 mb-3">
+                        
+                        <input type="checkbox"  style="direction: {{ App::getLocale() == 'ar' ? 'rtl' : 'ltr' }}" 
+                        value="saved_shipping_address" class="form-check-input" name="shipping_address">
 
-                  <label for="shipping_address" class="form-check-label ">{{ __('I wish to receive order to my saved shipping address') }}</label>
-               </div>
+                        <label for="shipping_address" class="form-check-label ">{{ __('I wish to receive order to my saved shipping address') }}</label>
+                    </div>
 
-              @else
-              
-               <div class="col-md-12 mb-3">
-                  <label for="shipping_address" class="form-label ">{{ __('Shipping address') }}</label>
-                  <input type="text"  style="direction: {{ App::getLocale() == 'ar' ? 'rtl' : 'ltr' }}" 
-                  value="{{ old('shipping_address') ?? '' }}" class="form-control form-control-sm" name="shipping_address">
-               </div>
+                    @else
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="shipping_address" class="form-label ">{{ __('Shipping address') }}</label>
+                        <input type="text"  style="direction: {{ App::getLocale() == 'ar' ? 'rtl' : 'ltr' }}" 
+                        value="{{ old('shipping_address') ?? '' }}" class="form-control form-control-sm" name="shipping_address">
+                    </div>
 
-               @endif
+                    @endif
 
+                </div>
           </div>
-    </div>
-@endauth
-</form>{{-- checkout form --}}
+      @endif
+    @endauth
+
+  </form>{{-- checkout form --}}
+
 
     @guest
+       @if($compta['total_qty'] !== 0)
         <div class='row'>
           <div class='col col-md-6 '>
 
@@ -249,6 +300,7 @@
 
           </div>
       </div>
+      @endif
     @endguest
 
 
@@ -258,19 +310,50 @@
 <div class='container carousel my-3'>
   <h3 class='text-center mt-5 mb-3 products-title text-uppercase'>  {{ __('wishlist') }} </h3>
 
-    <div class="swiper">
+
+
+  <div class="swiper">
       
       <div class="swiper-wrapper">
       
-      
-        @for ($i =0 ; $i < 5 ; $i++)
+      @forelse($wishlists as $wishlist)
+
+        @auth
+            <div class="swiper-slide">
+                  <a href='#'> 
+                    <img src="{{ app()->environment('production') ? asset('public/'.$wishlist->thumb) :  asset($wishlist->thumb)}}" class="img-fluid" alt="...">
+                    </a>
+              </div>
+        @endauth
+
+        @guest
+
+          
+            <div class="swiper-slide">
+                <a href='#'> 
+                
+                  <img src="{{ app()->environment('production') ? asset('public/'.$wishlists[$loop->index]) : asset($wishlists[$loop->index])}}" class="img-fluid" alt="...">
+                  </a>
+            </div>
+          
+
+        @endguest
+     @empty
+
+        
+         {{-- @for ($i = 0 ; $i < 5; $i++)
           <div class="swiper-slide">
               <a href='#'> 
+              
                 <img src="{{ app()->environment('production') ? asset('public/media/products/wood-bol-product-img-thumb.png') : asset('media/products/wood-bol-product-img-thumb.png')}}" class="img-fluid" alt="...">
                 </a>
           </div>
-        @endfor
-    
+        @endfor --}}
+
+
+          
+     @endforelse
+
         
       </div>
       <!-- If we need navigation buttons -->

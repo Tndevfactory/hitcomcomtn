@@ -18,6 +18,12 @@
   "profile seller": " profil vendeur ",
   "profile client": " profil client",
 
+  "cart- counter--section": "---------------------------------------",
+  "counter": {
+    "Items": "Items",
+    "Total": "Total"
+  },
+
   "login register page ": "-----------------------------------------------------------------------------",
 
   "first name": "prénom",
@@ -37,7 +43,7 @@
 
   "Products": "Produits",
   "Price": "Prix",
-  "add to cart": "ajouter au panier",
+  "Add to cart": "Ajouter au panier",
 
   "email welcome": "-----------------------------------------------------------------------------",
 
@@ -99,7 +105,7 @@
   "product": "produit",
   "cart": "panier",
   "search": "recherche",
-  "wishlist": "liste d'envies",
+  "wishlist": "liste de souhaits",
 
   "product page": " ---------------------------------------------------------------",
 

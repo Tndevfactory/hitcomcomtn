@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Api\LoginController;
 
 
 
@@ -22,5 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/cart', [CartController::class, "index"])->name('cart');
+// cart api zone ------------------------------------------------------------
+Route::get('/check-cart-count', [CartController::class, "checkCartCount"])->name('check-cart-count');
+Route::get('/add-to-cart', [CartController::class, "addToCart"])->name('add-to-cart');
+
+// category api zone 
 Route::get('/category', [CategoryController::class, "categoryFilter"])->name('category');
+
+// auth api zone 
+Route::post('/login', [LoginController::class, "login"])->name('login');
+Route::post('/test-token', [LoginController::class, "testToken"])->middleware('auth:api')->name('test-token');

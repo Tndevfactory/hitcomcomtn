@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Image;
 use App\Models\Stock;
 use App\Models\Category;
+use App\Models\Wishlist;
 use App\Models\Subcategory;
 use App\Models\Ratingproduct;
 use App\Models\Commentproduct;
@@ -69,5 +70,8 @@ class Product extends Model
     return $this->hasMany(Commentproduct::class);
     }
 
+    public function wishlists(){
+        return $this->hasMany(Wishlist::class);
+        }
     
 }

@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\Permission;
 use App\Models\Ratingproduct;
 use App\Models\Commentproduct;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

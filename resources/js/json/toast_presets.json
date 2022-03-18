@@ -1,0 +1,28 @@
+[
+  {
+    "name": "success",
+    "icon": "fa-solid fa-square-check",
+    "icon_size": "25px",
+    "duration": "2500",
+    "background": "RGBA(3,108,34,0.9)",
+    "height": "75px",
+    "color": "#FFFFFF",
+
+    "show_progress_timeout": "true",
+    "progress_background": "#5a9fdc",
+    "progress_thumb_bg": "rgba(32,105,156,.9)"
+  },
+
+  {
+    "name": "fail",
+    "icon": "fa-solid fa-triangle-exclamation",
+    "icon_size": "25px",
+    "duration": "2500",
+    "background": "RGBA(155,2,6,1)",
+    "height": "75px",
+    "color": "#FFFFFF",
+    "show_progress_timeout": "true",
+    "progress_background": "rgb(255 175 175)",
+    "progress_thumb_bg": "#ff1e1e"
+  }
+]

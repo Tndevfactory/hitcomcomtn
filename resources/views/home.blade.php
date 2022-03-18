@@ -1,3 +1,19 @@
+
+@php
+
+// engine s
+
+//cache()->flush();
+$currency=session()->get('currency');
+
+
+ cache()->put('currency', $currency );
+       
+ cache()->put('language', Request()->language);
+
+
+@endphp
+
 @extends('base')
 
 @section('meta')
@@ -11,9 +27,6 @@
 
 
 <style>
-.checked {
-  color: orange;
-}
 
 .card-categorie{
      box-shadow: 1px 1px 8px rgba(0,0,0,0.3);
@@ -65,19 +78,11 @@
     font-size:.9rem;
 }
 
+ 
 
 </style>
-@endsection
 
-
-
-
-@section('content')
-
-
-<div class='container'>
-
-   @if (App::getLocale() == 'ar')
+@if (App::getLocale() == 'ar')
     
     <style>
     .carousel-item {
@@ -90,6 +95,34 @@
 
    @endif
 
+@endsection
+
+
+@section('content')
+
+
+<div class='container'>
+
+
+  {{-- <main-counter></main-counter> --}}
+
+  
+ {{-- <example-component
+ currency={{ $currency }}
+ language={{ Request()->language }}
+  csrf-token="{{ csrf_token() }}"
+  stringx='ch'
+  numberx=30001
+  :categories='@json($categories)'
+  >
+  </example-component> --}}
+
+  
+  {{-- <todos-api 
+    currency={{ $currency }}
+    language={{ Request()->language }}
+    csrf-token="{{ csrf_token() }}"
+   ></todos-api> --}}
 
 
 <div id="carouselExampleCaptions" class="carousel slide mt-4 d-none d-md-block" data-bs-ride="carousel">
@@ -142,17 +175,26 @@
 
 
 
-<div class="row row-cols-2 row-cols-md-4 g-4">
+<div class="row row-cols-2 row-cols-md-4 gx-2 gy-4 ">
 
     @foreach ($categories as $category)
-        <div class="col">
+        <div class="col mb-3">
            <div class="card card-categorie text-white border border-0 h-100">
-                <img src="{{ app()->environment('production') ? asset('public/'.$category->category_image) : asset($category->category_image)}}" class="card-img" alt="...">
+                <img src="{{ app()->environment('production') ? asset('public/'.$category->category_image) : asset($category->category_image)}}" 
+                class="card-img" alt="...">
                 <div class="card-img-overlay ">
                     
                     <div style='background-color:rgba(0,0,0,0.5)' class="w-100">
-                    <p class="card-title fs-6 text-center py-1 rounded-sm  text-uppercase"
-                     style='font-weight:900;text-shadow: 1px 1px 3px rgba(0,0,0,0.4)' style='letter-spacing:2px'> 
+                     </div>
+                    <a href="{{ route('show-category' , ['slug'=> $category->category_slug , 'currency'=> Request()->session()->get('currency'),  'language' => App::getLocale()])}}" 
+                    class="stretched-link btn-sm">                
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="info ">
+            <span class='text-center mt-1  d-block categories-title text-uppercase text-muted'> 
                         @if(App::getLocale() === 'fr')
                         {{ $category->fr_category_name }}
 
@@ -161,15 +203,10 @@
                         @else
                           {{ $category->ar_category_name }}
                         @endif 
-                     </p>
-                     </div>
-                    <a href="{{ route('show-category' , ['slug'=> $category->category_slug , 'currency'=> Request()->session()->get('currency'),  'language' => App::getLocale()])}}" 
-                    class="stretched-link btn-sm">                
-                    </a>
-
-                </div>
-            </div>
+             </span>
+          </div>
         </div>
+        
     @endforeach
     
 </div>
@@ -177,18 +214,42 @@
 </div>
 
 <h2 class='text-center mt-5 mb-3 products-title text-uppercase'>  {{ __('Products') }} </h2>
-
-{{-- <pre>
+{{-- 
+<pre>
 @php 
 
-if(session()->get('cart')){
-    print_r(session()->get('cart'));
-     var_dump(session()->get('cart'));
+// if(session()->get('cart')){
+//     print_r(session()->get('cart'));
+//      var_dump(session()->get('cart'));
+//     echo 'compta ================== ';
+//     print_r(session()->get('compta'));
+//     var_dump(session()->get('compta'));
+//   }else{
+//     echo 'session cart empty';
+//   };
+
+
+ //cache()->forget('compta');
+ echo '<br>';
+ echo cache('language');
+ echo '<br>';
+ echo cache('currency');
+ echo '<br>';
+ echo cache('user');
+ echo '<br>';
+ echo cache()->get('compta')['total_qty'];
+ echo '<br>';
+ echo cache()->get('compta')['total_ttc_before_coupon'];
+ echo '<br>';
+
+if(cache()->get('cart')){
+    print_r(cache()->get('cart'));
+     var_dump(cache()->get('cart'));
     echo 'compta ================== ';
-    print_r(session()->get('compta'));
-    var_dump(session()->get('compta'));
+    print_r(cache()->get('compta'));
+    var_dump(cache()->get('compta'));
   }else{
-    echo 'session cart empty';
+    echo 'cache cart empty';
   };
 
 @endphp
@@ -197,54 +258,63 @@ if(session()->get('cart')){
 <div class='container'>
  
 
-<div class="row row-cols-2 row-cols-md-4 g-4">
+<div class="row row-cols-2 row-cols-md-4 gx-2 gy-4">
 
 
     @foreach ($products as $product)
     <div class="col">
-        <div class="card card-product h-100 shadow-sm ">
+      <div class="card card-product h-100 shadow-sm ">
 
-       {{-- @php
-       echo( isset($product->images[0]->product_image));
-        @endphp --}}
 
-        <img src="{{ app()->environment('production') ? asset(isset($product->images[0]->product_image) ? 'public/'.$product->images[0]->product_image : 'public/media/products/support.png') :
+        <img src="{{ 
+        app()->environment('production') ? asset(isset($product->images[0]->product_image) 
+        ? 'public/'.$product->images[0]->product_image : 'public/media/products/support.png') :
          asset(isset($product->images[0]->product_image) ? $product->images[0]->product_image : 'media/products/support.png')}}"
          class="card-img-top" alt="...">
 
-        <div class='control-btn'>
-
+        <div class='control-btn d-none d-md-flex '>
               <div class="btn-group" role="group" aria-label="Basic example">
 
-                <a href='{{ route('show-product' , ['slug'=> $product->product_slug , 'language' => App::getLocale()])}}' 
-                class='btn btn-light' title='see details'> <span class="fas fa-eye text-info"></span> </a>
+                       <a href='{{ route('show-product' , ['slug'=> $product->product_slug , 'language' => App::getLocale()])}}' 
+                        class='btn btn-outline-light' title='see details'> <span class="fas fa-eye text-primary"></span> </a>
 
-                <a href='{{ route('add-to-cart', ['user_id' => Auth::id(), 'id'=> $product->id, 'currency'=> Request()->session()->get('currency'), 'language' => App::getLocale()]) }}' 
-                   class='btn btn-success text-capitalize' title='add to cart'> {{ __('add to cart') }}<span class="ms-1 fas fa-cart-plus text-light"></span>
-                </a>
+                        {{-- <a href='{{ route('add-to-cart', ['user_id' => Auth::id(), 'id'=> $product->id, 'currency'=> Request()->session()->get('currency'), 'language' => App::getLocale()]) }}' 
+                          class='btn btn-warning  text-dark' title='add to cart' style=''> {{ ucfirst(__('add to cart')) }}
+                          <i class="fa-solid fa-cart-arrow-down"></i>
 
-                <a href='{{ route('add-to-wishlist', ['product_id' => $product->id , 'user_id'=> Auth::id(), 'language'=> App::getLocale()]) }}'
-                 class='btn btn-light' title='add to wishlist'> <span class="fas fa-heart text-danger "></span></a>
+                        </a> --}}
+
+                        <add-to-cart 
+                        currency={{ $currency }}
+                        language={{ Request()->language }}
+                        csrf-token="{{ csrf_token() }}"
+                        product-id= {{$product->id}}
+                      ></add-to-cart>
+
+                      <a href='{{ route('add-to-wishlist', ['product_id' => $product->id , 'user_id'=> Auth::id(), 'language'=> App::getLocale()]) }}'
+                        class='btn btn-outline-light' title='add to wishlist'> <span class="fas fa-heart text-danger "></span></a>
+           </div>
 
              </div>
+                      
 
-        </div>
         <div class="card-body">
-            <h5 class="card-title text-uppercase " style='color:#666;font-size:1rem'>
-            <div class='text-muted mb-1' style='font-size:0.8rem;font-weight:300'>[ {{ $product->id }} ] </div>  
+          <div class='text-muted mb-1' style='font-size:0.8rem;font-weight:400'> ht-{{ $product->id }} </div>  
+            <span class="card-title text-uppercase " style='color:#666;font-size:1rem; font-weight: 500'>
                      @if(App::getLocale() === 'fr')
-                     {{ $product->fr_product_name }}    <span class=' {{ $product->status === 'available' ? 'text-success' : 'text-danger'}}  ms-4' style='font-size:0.8rem;font-weight:400'> {{ $product->status === 'available' ? 'en stock' : 'non disponible'}} </span>  
+                     {{ $product->fr_product_name }}    <span class=' {{ $product->status === 'available' ? 'text-success' : 'text-danger'}}  ms-4' style='font-size:0.8rem;font-weight:400'> {{ $product->status === 'available' ? '' : 'non disponible'}} </span>  
 
                         @elseif(App::getLocale() === 'en')
-                          {{ $product->en_product_name }}    <span class=' {{ $product->status === 'available' ? 'text-success' : 'text-danger'}}  ms-4' style='font-size:0.8rem;font-weight:400'> {{ $product->status === 'available' ? 'available' : ' not available' }} </span>  
+                          {{ $product->en_product_name }}    <span class=' {{ $product->status === 'available' ? 'text-success' : 'text-danger'}}  ms-4' style='font-size:0.8rem;font-weight:400'> {{ $product->status === 'available' ? '' : ' not available' }} </span>  
                         @else
                           {{ $product->ar_product_name }}    <span class=' {{ $product->status === 'available' ? 'text-success' : 'text-danger'}}  ms-4' 
-                           style='font-size:0.8rem;font-weight:400'> {{ $product->status !== 'available' ? 'غير متوفر' : 'متوفر' }} </span>  
+                           style='font-size:0.8rem;font-weight:400'> {{ $product->status !== 'available' ?     'غير متوفر' : ''    }} </span>  
                         @endif 
             
             
-            </h5>
-            <span>
+            </span>
+
+            <div>
             @for ($i = 0; $i < 5; $i++)
                 @if (floor($product->avg_rating ) - $i >= 1)
                     {{--Full Start--}}
@@ -257,10 +327,12 @@ if(session()->get('cart')){
                    <span class="fa fa-star " style='font-size:1rem;color:#eee'></span>
                 @endif
             @endfor
+            <span class="text-decoration-none d-inline"style='font-size:0.9rem;color:#888'>
+              (<span style='font-size:0.8rem;color:#555'>{{ $product->comment_count }}</span>)
             </span>
-            <span class="text-decoration-none"style='font-size:0.9rem;color:#888'>(<span style='font-size:0.8rem;color:#555'>{{ $product->comment_count }}</span>)</span>
+          </div>
             
-            <p class="card-text">
+            <p class="card-text d-none d-md-block">
             
                @if(App::getLocale() === 'fr')
                                   {{ Str::limit($product->fr_description , 25)}}
@@ -272,39 +344,42 @@ if(session()->get('cart')){
                                   @endif 
             
             </p>
+
             <div class='price'>
 
-            <span class="card-text">
+              <span class="card-text">
 
+                  
+                    <span class='fw-bold text-secondary d-none '> {{ __('Price') }}:  </span> 
+                    <span class='price-value text-success fs-6 nowrap' >  
+                        @if (Session::get('currency') == 'dollar')  
+                        ${{ number_format($product->price,2,'.',',') }}
+                          @else  {{ number_format($product->euro_price,2,',',' ') }}€ 
+                        @endif
+                    </span> 
                 
-                   <span class='fw-bold text-secondary '> {{ __('Price') }}:  </span> 
-                   <span class='fw-bold text-success fs-5'>  
-                      @if (Session::get('currency') == 'dollar')  
-                      ${{ number_format($product->price,2,'.',',') }}
-                        @else  {{ number_format($product->euro_price,2,',',' ') }}€ 
-                      @endif
-                   </span> 
-               
-            
-            </span>
+              
+              </span>
 
-           @if($product->discount != '0')
+           
+
+                @if($product->discount != '0')
            
                     @if(App::getLocale() === 'fr')
                     
                       <span class="card-text badge  text-white d-flex justify-content-center align-items-center" 
-                          style='text-shadow:1px 1px 1px rgba(0,0,0,0.2);font-size:0.8rem;background-color: #FE472C; height:2.2rem;width:2.2rem;border-radius:50%' >
+                          style='text-shadow:1px 1px 1px rgba(0,0,0,0.2);font-size:0.8rem;background-color: #4fb06e; height:2.2rem;width:2.2rem;border-radius:50%' >
                         -{{ number_format($product->discount,0,'.',',') }}%
                       </span>
 
                     @elseif(App::getLocale() === 'en')
                       <span class="card-text badge  text-white  d-flex justify-content-center align-items-center" 
-                          style='text-shadow:1px 1px 1px rgba(0,0,0,0.2);font-size:0.8rem;background-color: #FE472C; height:2.2rem;width:2.2rem;border-radius:50%' >
+                          style='text-shadow:1px 1px 1px rgba(0,0,0,0.2);font-size:0.8rem;background-color: #4fb06e; height:2.2rem;width:2.2rem;border-radius:50%' >
                         -{{ number_format($product->discount,0,'.',',') }}%
                       </span>
                     @else
                       <span class="card-text badge text-white d-flex justify-content-center align-items-center " 
-                          style='text-shadow:1px 1px 1px rgba(0,0,0,0.2);font-size:0.8rem;background-color: #FE472C; height:2.2rem;width:2.2rem;border-radius:50%' dir='ltr'>
+                          style='text-shadow:1px 1px 1px rgba(0,0,0,0.2);font-size:0.8rem;background-color: #4fb06e; height:2.2rem;width:2.2rem;border-radius:50%' dir='ltr'>
                        -{{ number_format($product->discount,0,'.',',') }}%
                       </span>
                     @endif 
@@ -312,20 +387,77 @@ if(session()->get('cart')){
             
             @endif 
 
-            </div>
+
+
+            </div>             {{-- end price --}}
+
+
+
+                <div class='control-btn-mobile-view mt-3  d-md-none d-flex justify-content-center align-items-center'>
+                      <div class="btn-group" role="group" aria-label="Basic example">
+
+                        <a href='{{ route('show-product' , ['slug'=> $product->product_slug , 'language' => App::getLocale()])}}' 
+                        class='btn btn-outline-primary' title='see details'> <span class="fas fa-eye text-info"></span> </a>
+
+                        {{-- <a href='{{ route('add-to-cart', ['user_id' => Auth::id(), 'id'=> $product->id, 'currency'=> Request()->session()->get('currency'), 'language' => App::getLocale()]) }}' 
+                          class='btn btn-warning ' title='add to cart'>
+                          <i class="fa-solid fa-cart-arrow-down"></i>
+                        </a> --}}
+                        <add-to-cart 
+                        currency={{ $currency }}
+                        language={{ Request()->language }}
+                        csrf-token="{{ csrf_token() }}"
+                        product-id= {{$product->id}}
+                      ></add-to-cart>
+
+                        <a href='{{ route('add-to-wishlist', ['product_id' => $product->id , 'user_id'=> Auth::id(), 'language'=> App::getLocale()]) }}'
+                        class='btn btn-outline-primary' title='add to wishlist'> <span class="fas fa-heart text-danger "></span></a>
+
+                    </div>
+                </div>
+
             
-        </div>
-        </div>
-    </div> 
+        </div>         {{-- end cardbody--}}
+       
+
+      </div> {{-- end card --}}
+    </div>  {{-- en col --}}
     @endforeach
   
 </div>
+
+ 
 
 </div>
 
 <div class="pagination justify-content-center mt-4">
     {{ $products->links() }}
 </div>
+
+{{-- <div class="container">    
+  <div id="edito">    
+
+  </div>
+  <div id="editor">    
+
+  </div>
+</div> --}}
+
+
+
+ {{-- <example-component
+ currency={{ $currency }}
+ language={{ Request()->language }}
+  csrf-token="{{ csrf_token() }}"
+  stringx='ch'
+  numberx=30001
+  :categories='@json($categories)'
+  >
+  </example-component> --}}
+
+  
+    
+   
 
 @endsection
 
@@ -336,5 +468,14 @@ if(session()->get('cart')){
 <script>
 let categorieTitle=document.querySelector('.categories-title ')
 // gsap.to(categorieTitle,{x:3, repeat:-1, 
+</script>
+
+
+
+<script>
+
+    {{-- CKEDITOR.replace( 'edito' );
+    CKEDITOR.replace( 'editor' ); --}}
+
 </script>
 @endsection

@@ -8,12 +8,16 @@ use App\Models\Image;
 use App\Models\Stock;
 use App\Models\Product;
 use App\Models\Shipping;
+use App\Models\Wishlist;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ShippingController;
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request){
+    public function addToCart(Request $request, ShippingController $shippingController){
 
 
         $product = Product::find($request->id)->where('id', $request->id)->firstOrFail();
@@ -23,6 +27,16 @@ class CartController extends Controller
         abort(404);
        };
        
+
+        //shipping shipping_amount_fixed shipping_amount_variable
+        //  $shipping = new ShippingController;
+        //     "seuil" => "120"
+        //   "shipping_calculation_method" => "shipping_amount_fixed "
+        //   "shipping_amount_value" => "8"
+
+       
+
+    
        
 
        $image = Image::find($product->id)->where('product_id', $product->id)->firstOrFail();
@@ -88,6 +102,8 @@ class CartController extends Controller
                                 "product_img" => $image->product_image,
                                 "tax" => floatval($tax->rate),
                                 "shop_id" => 6,
+
+                              
         
                                 ]
                 ];
@@ -97,7 +113,7 @@ class CartController extends Controller
                 
                  //compta
 
-                 $multiple_currencies_in_same_orders=$this->compta($cart, $currency );
+                 $multiple_currencies_in_same_orders=$this->compta($cart, $currency, $shippingController );
 
                  // dd($multiple_currencies_in_same_orders);
 
@@ -128,7 +144,7 @@ class CartController extends Controller
               
                 //compta
 
-                $multiple_currencies_in_same_orders=$this->compta($cart, $currency );
+                $multiple_currencies_in_same_orders=$this->compta($cart, $currency, $shippingController );
 
                 // dd($multiple_currencies_in_same_orders);
 
@@ -160,12 +176,13 @@ class CartController extends Controller
                 "tax" => floatval($tax->rate),
                 "shop_id" => 6,
                 
+                
             ];
                 session()->put('cart', $cart);
                 
                 //compta
 
-                $multiple_currencies_in_same_orders=$this->compta($cart, $currency );
+                $multiple_currencies_in_same_orders=$this->compta($cart, $currency , $shippingController);
 
                     // dd($multiple_currencies_in_same_orders);
 
@@ -183,7 +200,12 @@ class CartController extends Controller
 
     }
 
-    public function compta($cart, $currency ){
+    public function compta($cart, $currency  ,  $shippingController){
+
+        
+        //    var_dump((float)$shipping["seuil"]);
+
+        // dd($shippingController->shippingConfig());
 
         // init calculation
         $totat_qty=0;
@@ -210,6 +232,7 @@ class CartController extends Controller
                 break;
 
                }
+
             $totat_qty += $info['qty'];
             $totat_price_ht += $info['qty'] * $info['price'];
             $totat_discount += $totat_price_ht * ($info['discount']/100);
@@ -217,12 +240,38 @@ class CartController extends Controller
 
         }
 
-        $seuil = (int)Shipping::where('name', 'seuil')->first()->pluck('rate')[2];
-        $shipping_fixe = (int)Shipping::where('name', 'fixe')->first()->pluck('rate')[0];
 
-        $total_before_coupon= ($totat_price_ht - $totat_discount) + $total_taxes;
-        $shipment_fee = $totat_price_ht > $seuil ? 0 : $shipping_fixe ;
-        $total_ttc_before_coupon= ($total_before_coupon + $shipment_fee)  ;
+        $total_before_coupon = ($totat_price_ht - $totat_discount) + $total_taxes;
+        
+        
+
+        // test sur seuil et shipping
+        $shipping = $shippingController->shippingConfig();
+
+            $shipping_amount_value =  (float)$shipping["shipping_amount_value"];
+            $shipping_seuil =  (float)$shipping["seuil"];
+
+        if($shipping["shipping_calculation_method"] === 'shipping_amount_variable'){
+
+            $shipping_amount_value === 0 ? 1 : $shipping_amount_value;
+
+            $shipping_amount_value = $totat_price_ht * ($shipping_amount_value / 100);
+            $shipment_fee = $totat_price_ht > $shipping_seuil ? 0 : $shipping_amount_value ;
+
+
+        }else{
+
+            $shipment_fee = $totat_price_ht > $shipping_seuil ? 0 : $shipping_amount_value ;
+
+        }
+
+        
+        
+        
+
+        $total_ttc_before_coupon = $total_before_coupon + $shipment_fee  ;
+
+       //dd($total_ttc_before_coupon);
 
         $compta=[
 
@@ -232,7 +281,7 @@ class CartController extends Controller
             'total_taxes' => $currency == 'euro' ? number_format($total_taxes,2,',',' ') : number_format($total_taxes,2,'.',',') ,
             'total_before_coupon' => $currency == 'euro' ? number_format($total_before_coupon,2,',',' ') : number_format($total_before_coupon,2,'.',',') ,
             'shipment_fee'=>  $currency == 'euro' ? number_format($shipment_fee,2,',',' ') : number_format($shipment_fee,2,'.',',') ,
-            'total_ttc_before_coupon' => $currency == 'euro' ? number_format($total_ttc,2,',',' ') : number_format($total_ttc,2,'.',',') ,
+            'total_ttc_before_coupon' => $total_ttc_before_coupon,
             'currency' => $currency 
             
         ];
@@ -244,8 +293,10 @@ class CartController extends Controller
     }
 
     
-    public function showCart(Request $request){
-        return view('products.cart',['language'=>$request->language,'product'=>'product' ]);
+    public function showCart(Request $request, WishlistController $wishlistController){
+       
+               
+        return view('products.cart',['language'=>$request->language,'wishlists'=> $wishlistController->shareToSwipperCarousel() ]);
     }
 
     public function clearAllCartItems(Request $request){
@@ -263,7 +314,7 @@ class CartController extends Controller
 
     }//end function
 
-    public function updateCartItemQty(Request $request){
+    public function updateCartItemQty(Request $request, ShippingController $shippingController){
 
         $currency= $request->currency;
        
@@ -322,13 +373,13 @@ class CartController extends Controller
          }
         
         
-        $multiple_currencies_in_same_orders=$this->compta($cart, $request->currency );
+        $multiple_currencies_in_same_orders=$this->compta($cart, $request->currency, $shippingController );
         return redirect()->back()->with('success', $response);
 
     }//end function
         
         
-    public function deleteCartItem(Request $request){
+    public function deleteCartItem(Request $request,  ShippingController $shippingController){
 
        //dd($request->product_id);
 
@@ -336,7 +387,7 @@ class CartController extends Controller
         unset($cart[$request->product_id]);
         session()->put('cart', $cart);
         $cart =session()->get('cart');
-        $multiple_currencies_in_same_orders=$this->compta($cart, $request->currency );
+        $multiple_currencies_in_same_orders=$this->compta($cart, $request->currency , $shippingController);
         return redirect()->back()->with('success', 'cart item removed with success ');
 
 

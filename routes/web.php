@@ -216,6 +216,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 
 				return "<h1>response artisan:   $callResponse  </h1>";
 			});
+
 			Route::get('/config-cache', function() {
                 $stream = fopen("php://output", "w");
                 Artisan::call('config:cache', [
@@ -228,6 +229,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 
 				return "<h1>response artisan:   $callResponse  </h1>";
 			});
+
 			Route::get('/optimize', function() {
                 $stream = fopen("php://output", "w");
                 Artisan::call('optimize', [
@@ -240,6 +242,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 
 				return "<h1>response artisan:   $callResponse  </h1>";
 			});
+            
 			Route::get('/migrate', function() {
                 $stream = fopen("php://output", "w");
                 Artisan::call('migrate', [
@@ -269,6 +272,42 @@ use Symfony\Component\Console\Output\StreamOutput;
 			Route::get('/cache-clear', function() {
                 $stream = fopen("php://output", "w");
                 Artisan::call('cache:clear', [
+                    // '--path' => 'database/migrations/customer',
+                    // '--force' => true,
+                    // '--database' => $connectionName
+                ], new StreamOutput($stream));
+
+                $callResponse = ob_get_clean();
+
+				return "<h1>Cache cleared ,   $callResponse  </h1>";
+			});
+			Route::get('/config-clear', function() {
+                $stream = fopen("php://output", "w");
+                Artisan::call('config:clear', [
+                    // '--path' => 'database/migrations/customer',
+                    // '--force' => true,
+                    // '--database' => $connectionName
+                ], new StreamOutput($stream));
+
+                $callResponse = ob_get_clean();
+
+				return "<h1>Cache cleared ,   $callResponse  </h1>";
+			});
+			Route::get('/view-clear', function() {
+                $stream = fopen("php://output", "w");
+                Artisan::call('view:clear', [
+                    // '--path' => 'database/migrations/customer',
+                    // '--force' => true,
+                    // '--database' => $connectionName
+                ], new StreamOutput($stream));
+
+                $callResponse = ob_get_clean();
+
+				return "<h1>Cache cleared ,   $callResponse  </h1>";
+			});
+			Route::get('/route-clear', function() {
+                $stream = fopen("php://output", "w");
+                Artisan::call('route:clear', [
                     // '--path' => 'database/migrations/customer',
                     // '--force' => true,
                     // '--database' => $connectionName

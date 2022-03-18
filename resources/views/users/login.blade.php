@@ -29,7 +29,6 @@
        <div class="col-md-12">
             <label for="inputEmail4" class="form-label text-capitalize">{{ __('email') }}</label>
              <input type="email"  style="direction: {{ App::getLocale() == 'ar' ? 'rtl' : 'ltr' }}" value="{{ old('email') ?? '' }}" class="form-control  @error('email') 'is-invalid' @enderror "  name="email">
-                @error('email')  <span class="form-text text-danger small">{{$message}}.</span>    @enderror
         </div>
 
         <div class="col-md-12">
@@ -41,8 +40,7 @@
             </div>
 
              <input type="password" value="{{ old('password') ?? '' }}" class="form-control
-                @error('password') 'is-invalid' @enderror "  name="password"> @error('password')
-                        <span class="form-text text-danger small">{{$message}}.</span> @enderror
+                @error('password') 'is-invalid' @enderror "  name="password"> 
         </div>
 
         <div class="col-12 d-flex justify-content-between align-items-center">

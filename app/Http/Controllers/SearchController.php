@@ -31,6 +31,6 @@ class SearchController extends Controller
        
        
 
-        return view('products.search', ['language'=>$request->language, 'products'=> $products  ]);
+        return view('products.search', ['language'=>$request->language, 'products'=> $products, 'item'=> $request->item  ]);
     }
 }

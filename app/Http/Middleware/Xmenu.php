@@ -6,6 +6,7 @@ use Closure;
 use App\Models\Theme;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class Xmenu
 {
@@ -27,6 +28,8 @@ class Xmenu
             $request->session()->put('currency', 'euro') ;
 
         }
+
+        Cache::put('currency', session()->get('currency'));
 
         $theme = session()->get('theme');
 

@@ -57,6 +57,7 @@ class LoginController extends Controller
 
 
         if (Auth::attempt($validatedData)) {
+            Cache::put('user', Auth::user() );
 
             switch (Auth::user()->role) {
                 case 'admin':
@@ -125,6 +126,7 @@ class LoginController extends Controller
         if (!is_null($user)) {
             
             Auth::login($user);
+            Cache::put('user', Auth::user() );
 
             $data_mail_welcome=[
                 'first_name' => Auth::user()->first_name,
@@ -169,6 +171,9 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        Cache::forget('user', Auth::user() );
+
         return redirect('/');
     }
 
